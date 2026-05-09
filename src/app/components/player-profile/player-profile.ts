@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RosterService } from '../../services/roster';
 import { PlayerCard } from '../player-card/player-card';
 import { Player } from '../../models/player.model';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, DragDropModule } from '@angular/cdk/drag-drop';
+import html2canvas from 'html2canvas';
+
 
 @Component({
   selector: 'app-player-profile',
@@ -17,6 +19,23 @@ export class PlayerProfile implements OnInit {
   allPlayers: Player[] = [];
   filteredPlayers: Player[] = [];
   searchTerm: string = '';
+  
+  @ViewChild('rosterExportArea') rosterArea!: ElementRef;
+  async exportAsImage() {
+    if (this.teamCount === 0) return;
+
+    // Capture the div and convert it to a canvas
+    const canvas = await html2canvas(this.rosterArea.nativeElement, {
+      backgroundColor: '#0f1214',
+      scale: 2
+    });
+    
+    const image = canvas.toDataURL("image/png");
+    const link = document.createElement('a');
+    link.href = image;
+    link.download = `MyEsportsTeam-${new Date().getTime()}.png`;
+    link.click();
+  }
   
   constructor(private rosterService: RosterService) {}
 

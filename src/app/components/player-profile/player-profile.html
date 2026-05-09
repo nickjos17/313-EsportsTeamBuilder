@@ -1,10 +1,10 @@
 <div class="page-container dark-theme">
-  <section class="roster-header modern-dark">
+  <section class="roster-header modern-dark" #rosterExportArea>
     <div class="roster-label">
       <h3>Current Roster</h3>
       <div class="roster-actions">
         <button class="clear-btn" (click)="clearRoster()" [disabled]="teamCount === 0">Clear Roster</button>
-         <button class="export-btn">Export Roster</button>
+         <button class="export-btn" (click)="exportAsImage()">Export Roster</button>
          <button class="finalize-btn" [disabled]="teamCount < 5" routerLink="/rosters">Save Team</button>
       </div>
     </div>

@@ -147,23 +147,24 @@
   to { opacity: 1; transform: translateY(0); }
 }
 .top-nav-search {
-  width: 100%;
-  background: #1a1f24;
-  padding: 15px 0;
-  border-bottom: 1px solid #323a42;
-  /* Add margin here to push the gallery down */
-  margin-bottom: 25px; 
-}
-.top-nav-search input {
   width: 95%;
-  margin: 0 auto;
-  display: block;
-  background: #0f1214;
+  margin: 0 auto 30px auto;
+  background: #1a1f24;
+  padding: 10px 20px;
   border: 1px solid #323a42;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.top-nav-search input {
+  width: 100%;
+  background: transparent;
+  border: none;
   color: #fff;
-  padding: 12px 25px;
-  border-radius: 30px; 
+  padding: 10px;
   outline: none;
+  font-size: 1rem;
 }
 .top-nav-search input:focus {
   border-color: #00d4ff;
