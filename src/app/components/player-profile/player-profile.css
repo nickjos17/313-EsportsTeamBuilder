@@ -1,0 +1,28 @@
+.search-container {
+  margin: 20px;
+  text-align: center;
+}
+.search-container input {
+  padding: 12px 20px;
+  width: 60%;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.search-container input:focus {
+  border-color: #007bff;
+}
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+  gap: 30px;
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: start; 
+}
+app-player-card {
+  width: 100%;
+}
