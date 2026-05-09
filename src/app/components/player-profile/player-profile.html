@@ -1,16 +1,63 @@
-<div class="search-container">
+<div class="page-container dark-theme">
+  <section class="roster-header modern-dark">
+    <div class="roster-label">
+      <h3>Current Roster</h3>
+      <div class="roster-actions">
+        <button class="clear-btn" (click)="clearRoster()" [disabled]="teamCount === 0">Clear Roster</button>
+         <button class="export-btn">Export Roster</button>
+         <button class="finalize-btn" [disabled]="teamCount < 5" routerLink="/rosters">Save Team</button>
+      </div>
+    </div>
+
+    <div class="slots-horizontal" id="teamList" cdkDropList (cdkDropListDropped)="drop($event, -1)">
+      @for (slot of selectedPlayers; track $index) {
+        <div 
+            class="wireframe-slot" 
+            cdkDropList 
+            [id]="'slot-' + $index" 
+            [cdkDropListConnectedTo]="['galleryList']"
+            (cdkDropListDropped)="drop($event, $index)">
+          
+          @if (slot) {
+            <div class="filled-card" cdkDrag [cdkDragData]="slot">
+              <div class="mini-header">
+                <img [src]="slot.imageUrl" class="avatar">
+                <span class="name">{{ slot.name }}</span>
+              </div>
+              <div class="info-box">
+                <p>{{ slot.role }}</p>
+                <p>Win Rate: {{ slot.stats.winRate }}%</p>
+              </div>
+              <button (click)="remove($index)" class="remove-btn">Remove Player</button>
+            </div>
+          } @else {
+            <div class="empty-state"></div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+  <div class="gallery-header center">
+    <h2>PLAYERS</h2>
+  </div>
+  <div class="top-nav-search">
   <input 
     type="text" 
     placeholder="Search by name or role (e.g. Tank)..." 
     [(ngModel)]="searchTerm" 
     (input)="filterPlayers()"
   />
-</div>
+  </div>
 
-<div class="player-grid">
+  <main 
+  class="player-grid-7" 
+  cdkDropList 
+  id="galleryList" 
+  [cdkDropListData]="filteredPlayers" 
+  [cdkDropListConnectedTo]="['slot-0', 'slot-1', 'slot-2', 'slot-3', 'slot-4']">
+  
   @for (p of filteredPlayers; track p.id) {
-    <app-player-card [player]="p"></app-player-card>
-  } @empty {
-    <p>No players found matching "{{searchTerm}}"</p>
+    <app-player-card [player]="p" cdkDrag [cdkDragData]="p"></app-player-card>
   }
+</main>
 </div>

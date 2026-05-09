@@ -2,7 +2,6 @@
   <div class="player-photo">
     <img [src]="player.imageUrl || 'assets/placeholder.png'" alt="Player Photo">
   </div>
-  
   <div class="player-info">
     <h3>{{ player.name }}</h3>
     <p>Role: {{ player.role }}</p>
@@ -11,6 +10,8 @@
         <p><strong>Win Rate:</strong> {{ player.stats.winRate }}%</p>
     </div>
   </div>
-
-  <button class="action-btn">View Profile</button>
+   <div class="card-actions">
+    <button class="view-btn">View Profile</button>
+    <button class="add-btn" (click)="onAddClick()">Add to Team</button>
+  </div>
 </div>
