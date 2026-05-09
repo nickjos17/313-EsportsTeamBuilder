@@ -5,7 +5,9 @@
       <div class="roster-actions">
         <button class="clear-btn" (click)="clearRoster()" [disabled]="teamCount === 0">Clear Roster</button>
          <button class="export-btn" (click)="exportAsImage()">Export Roster</button>
-         <button class="finalize-btn" [disabled]="teamCount < 5" routerLink="/rosters">Save Team</button>
+          @if (userRole === 'admin') {
+            <button class="finalize-btn" [disabled]="teamCount < 5" (click)="saveCurrentRoster()">Save Team</button>
+          }
       </div>
     </div>
 
@@ -49,6 +51,43 @@
   />
   </div>
 
+  @if (userRole === 'admin') {
+  <div class="admin-toolbar">
+    <button class="add-new-btn" (click)="showAddForm = !showAddForm">
+      {{ showAddForm ? '✕ Close Form' : '+ Create New Hero' }}
+    </button>
+  </div>
+}
+@if (showAddForm && userRole === 'admin') {
+  <section class="admin-panel fadeIn">
+    <h3>DATABASE: ADD NEW HERO</h3>
+    <div class="admin-form-grid">
+      <div class="form-group">
+        <label>Player Name</label>
+        <input [(ngModel)]="newPlayer.name" placeholder="e.g. Kaos">
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <select [(ngModel)]="newPlayer.role">
+          <option value="DPS">DPS</option>
+          <option value="Tank">Tank</option>
+          <option value="Support">Support</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Image Path</label>
+        <input [(ngModel)]="newPlayer.imageUrl" placeholder="assets/icons/Filename.webp">
+      </div>
+      <div class="form-group">
+        <label>Starting Win Rate (%)</label>
+        <input type="number" [(ngModel)]="newPlayer.stats.winRate">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="save-hero-btn" (click)="saveNewPlayer()">PUSH TO DATABASE</button>
+    </div>
+  </section>
+}
   <main 
   class="player-grid-7" 
   cdkDropList 

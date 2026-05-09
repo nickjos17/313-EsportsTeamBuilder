@@ -12,7 +12,7 @@ import { RosterService } from '../../services/roster';
 })
 export class PlayerCard {
   @Input() player!: Player;
-
+  
   constructor(private rosterService: RosterService) {}
 
   onAddClick() {

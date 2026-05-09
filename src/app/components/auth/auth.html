@@ -1,1 +1,35 @@
-<p>auth works!</p>
+<div class="auth-container">
+  <div class="auth-box">
+    <h2>{{ isLogin ? 'LOGIN' : 'CREATE ACCOUNT' }}</h2>
+    
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" placeholder="Enter your email">
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" [(ngModel)]="pass" placeholder="Enter your password">
+    </div>
+    
+    <div class="input-group">
+  @if (!isLogin) {
+  <div class="input-group">
+    <label>Account Type</label>
+    <select [(ngModel)]="selectedRole">
+      <option value="player">Player (View Only)</option>
+      <option value="admin">Coach (Save Teams)</option>
+    </select>
+  </div>
+}
+</div>
+
+    <button class="main-auth-btn" (click)="handleAuth()">
+      {{ isLogin ? 'Sign In' : 'Sign Up' }}
+    </button>
+
+    <p class="toggle-text" (click)="isLogin = !isLogin">
+      {{ isLogin ? "Don't have an account? Register here" : "Already have an account? Login here" }}
+    </p>
+  </div>
+</div>

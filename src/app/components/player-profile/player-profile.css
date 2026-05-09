@@ -201,3 +201,79 @@
 .cdk-drag-preview button {
   display: none !important;
 }
+.admin-toolbar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.add-new-btn {
+  background: transparent;
+  color: #00d4ff;
+  border: 1px solid #00d4ff;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-new-btn:hover {
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.admin-panel {
+  background: #1a1f24;
+  border: 1px solid #00d4ff; /* Admin blue border */
+  border-radius: 12px;
+  padding: 30px;
+  width: 90%;
+  margin: 0 auto 40px auto;
+  max-width: 1000px;
+}
+
+.admin-panel h3 {
+  color: #00d4ff;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.form-group label {
+  display: block;
+  color: #adb5bd;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  background: #0f1214;
+  border: 1px solid #323a42;
+  color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  outline: none;
+}
+
+.save-hero-btn {
+  margin-top: 25px;
+  width: 100%;
+  background: #00d4ff;
+  color: #0f1214;
+  border: none;
+  padding: 15px;
+  border-radius: 6px;
+  font-weight: 900;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.fadeIn { animation: fadeIn 0.3s ease; }
