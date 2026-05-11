@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Player } from '../../models/player.model';
 import { RosterService } from '../../services/roster';
@@ -12,6 +12,9 @@ import { RosterService } from '../../services/roster';
 })
 export class PlayerCard {
   @Input() player!: Player;
+  @Output() viewProfile = new EventEmitter<Player>(); // The "shout"
+  selectedProfilePlayer: Player | null = null;
+  isEditing = false;
   
   constructor(private rosterService: RosterService) {}
 
@@ -24,5 +27,8 @@ export class PlayerCard {
   } else {
     alert('Team is full!');
   }
+}
+onViewProfile() {
+  this.viewProfile.emit(this.player); // Sending the player data up
 }
 }

@@ -35,7 +35,9 @@
               </div>
               <div class="info-box">
                 <p>{{ slot.role }}</p>
+                <p>KDA: {{ slot.stats.kda }}</p>
                 <p>Win Rate: {{ slot.stats.winRate }}%</p>
+                <p>Matches: {{ slot.stats.matchesPlayed }}</p>
               </div>
               <button (click)="remove($index)" class="remove-btn">Remove Player</button>
             </div>
@@ -61,7 +63,7 @@
     @if (userRole === 'admin') {
     <div class="admin-toolbar">
       <button class="add-new-btn" (click)="showAddForm = !showAddForm">
-        {{ showAddForm ? '✕ Close Form' : '+ Create New Hero' }}
+        {{ showAddForm ? '✕ Close Form' : '+ Create New Player' }}
       </button>
     </div>
     }
@@ -69,13 +71,13 @@
       <section class="admin-panel fadeIn">
         <h3>DATABASE: ADD NEW HERO</h3>
         <div class="admin-form-grid">
-          <div class="form-group">
-            <label>Player Name</label>
-            <input [(ngModel)]="newPlayer.name" placeholder="e.g. Kaos">
-          </div>
+  <div class="form-group">
+    <label>Player Name</label>
+    <input [(ngModel)]="newPlayer.name" placeholder="e.g. Kaos">
+  </div>
 
-          <div class="form-group">
-            <label>Role</label>
+  <div class="form-group">
+    <label>Role</label>
             <select [(ngModel)]="newPlayer.role">
               <option value="DPS">DPS</option>
               <option value="Tank">Tank</option>
@@ -153,10 +155,74 @@
   cdkDropList 
   id="galleryList" 
   [cdkDropListData]="filteredPlayers" 
-  [cdkDropListConnectedTo]="['slot-0', 'slot-1', 'slot-2', 'slot-3', 'slot-4']">
-  
-  @for (p of filteredPlayers; track p.id) {
-    <app-player-card [player]="p" cdkDrag [cdkDragData]="p"></app-player-card>
+  [cdkDropListConnectedTo]="['slot-0', 'slot-1', 'slot-2', 'slot-3', 'slot-4']"
+  (cdkDropListDropped)="drop($event, -1)"> @for (p of filteredPlayers; track p.id) {
+    <div class="player-card-container" cdkDrag [cdkDragData]="p">
+      <app-player-card 
+        [player]="p" 
+        (viewProfile)="openPlayerProfile($event)">
+      </app-player-card>
+    </div>
   }
 </main>
 </div>
+@if (selectedProfilePlayer) {
+  <div class="modal-overlay" (click)="closeProfile()">
+    <div class="profile-popup modern-dark fadeIn" (click)="$event.stopPropagation()">
+      <button class="close-popup" (click)="closeProfile()">✕</button>
+      
+      <div class="popup-header">
+        <img [src]="selectedProfilePlayer.imageUrl" class="large-avatar" alt="Hero Icon">
+        
+        @if (!isEditing) {
+          <h2>{{ selectedProfilePlayer.name }}</h2>
+          <span class="role-badge">{{ selectedProfilePlayer.role }}</span>
+        } @else {
+          <div class="form-group edit-name">
+            <label>Hero Name: </label>
+            <input [(ngModel)]="selectedProfilePlayer.name" placeholder="Name">
+          </div>
+        }
+      </div>
+
+      <div class="popup-stats-grid">
+        <div class="stat-card">
+          <label>KDA</label>
+          @if (!isEditing) {
+            <div class="stat-value">{{ selectedProfilePlayer.stats?.kda || 0 }}</div>
+          } @else {
+            <input type="number" step="0.1" [(ngModel)]="selectedProfilePlayer.stats.kda">
+          }
+        </div>
+        <div class="stat-card">
+          <label>WIN RATE</label>
+          @if (!isEditing) {
+            <div class="stat-value">{{ selectedProfilePlayer.stats?.winRate || 0 }}%</div>
+          } @else {
+            <input type="number" [(ngModel)]="selectedProfilePlayer.stats.winRate">
+          }
+        </div>
+        <div class="stat-card">
+          <label>MATCHES</label>
+          @if (!isEditing) {
+            <div class="stat-value">{{ selectedProfilePlayer.stats?.matchesPlayed || 0 }}</div>
+          } @else {
+            <input type="number" [(ngModel)]="selectedProfilePlayer.stats.matchesPlayed">
+          }
+        </div>
+      </div>
+
+      @if (userRole === 'admin') {
+        <div class="admin-controls">
+          @if (!isEditing) {
+            <button class="export-btn" (click)="isEditing = true">Edit Hero</button>
+            <button class="clear-btn" (click)="deletePlayerFromDB()">Delete Hero</button>
+          } @else {
+            <button class="finalize-btn" (click)="updatePlayerData()">Save Changes</button>
+            <button class="clear-btn" (click)="isEditing = false">Cancel</button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

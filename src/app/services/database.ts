@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, query, orderBy, getDocs, deleteDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, query, orderBy, getDocs, deleteDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { Player } from '../models/player.model';
 
 @Injectable({ providedIn: 'root' })
@@ -30,5 +30,14 @@ export class Database {
 async deleteRoster(userId: string, rosterId: string) {
   const docRef = doc(this.firestore, `users/${userId}/savedRosters`, rosterId);
   return deleteDoc(docRef);
+}
+async updateHero(heroId: string, data: any) {
+  const heroRef = doc(this.firestore, `players/${heroId}`);
+  return updateDoc(heroRef, data);
+}
+
+async deleteHero(heroId: string) {
+  const heroRef = doc(this.firestore, `players/${heroId}`);
+  return deleteDoc(heroRef);
 }
 }

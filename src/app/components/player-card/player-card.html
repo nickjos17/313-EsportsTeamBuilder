@@ -8,9 +8,11 @@
     <div class="stats">
         <p><strong>KDA:</strong> {{ player.stats.kda }}</p>
         <p><strong>Win Rate:</strong> {{ player.stats.winRate }}%</p>
+        <p><strong>Matches:</strong> {{ player.stats.matchesPlayed }}</p>
     </div>
   </div>
    <div class="card-actions">
+    <button class="view-profile-btn" (click)="onViewProfile()">View Profile</button>
     <button class="add-btn" (click)="onAddClick()">Add to Team</button>
   </div>
 </div>
