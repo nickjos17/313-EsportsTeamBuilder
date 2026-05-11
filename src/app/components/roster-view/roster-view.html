@@ -1,1 +1,44 @@
-<p>roster-view works!</p>
+<div class="roster-page-layout">
+  <aside class="roster-sidebar">
+    <h3>SAVED TEAMS</h3>
+    <div class="sidebar-scroll">
+      @for (team of savedTeams; track team.id) {
+        <button class="roster-tab" 
+                [class.active]="selectedTeam?.id === team.id"
+                (click)="selectTeam(team)">
+          {{ team.teamName }}
+        </button>
+      }
+    </div>
+  </aside>
+
+  <main class="roster-detail-view" #rosterExportArea>
+    @if (selectedTeam) {
+      <div class="detail-header" >
+        <h2>{{ selectedTeam.teamName }}</h2>
+        <div class="action-buttons">
+          <button class="btn-modern btn-export" (click)="exportAsImage()">EXPORT PNG</button>
+          <button class="btn-modern btn-delete" (click)="deleteRoster(selectedTeam.id)">DELETE</button>
+        </div>
+      </div>
+
+      <div class="roster-grid-display">
+        @for (player of selectedTeam.players; track $index) {
+          <div class="modern-dark player-detail-card">
+             <img [src]="player?.imageUrl" class="player-avatar">
+             <h4>{{ player?.name || 'EMPTY SLOT' }}</h4>
+             <div class="info-box">
+              <p>{{ player.role }}</p>
+              <p>KDA: {{ player.stats?.kda || 0 }}</p>
+              <p>Win Rate: {{ player.stats?.winRate || 0 }}%</p>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-selection">
+        <p></p>
+      </div>
+    }
+  </main>
+</div>

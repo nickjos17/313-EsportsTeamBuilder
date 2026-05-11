@@ -22,12 +22,13 @@ export class PlayerProfile implements OnInit {
   allPlayers: Player[] = [];
   filteredPlayers: Player[] = [];
   searchTerm: string = '';
-  userRole: string = 'player'; // Default to guest
+  currentTeamName: string = '';
+  userRole: string = 'player';
   showAddForm = false;
   newPlayer: any = {
   name: '',
   role: 'DPS',
-  imageUrl: 'assets/icons/Lucio.webp', // Default icon
+  imageUrl: 'assets/icons/Lucio.webp',
   stats: {
     winRate: 0,
     kda: 0,
@@ -36,18 +37,19 @@ export class PlayerProfile implements OnInit {
   }
 async saveNewPlayer() {
   if (!this.newPlayer.name) {
-    alert("Please enter a hero name!");
+    alert("Please enter a Player name!");
     return;
   }
   
   try {
-    // 1. Call the service to save to Firestore
+    this.newPlayer.stats.kda = Number(this.newPlayer.stats.kda);
+    this.newPlayer.stats.winRate = Number(this.newPlayer.stats.winRate);
+    this.newPlayer.stats.matchesPlayed = Number(this.newPlayer.stats.matchesPlayed);
     await this.rosterService.addPlayer(this.newPlayer);
     
-    // 2. Reset and close the form
     this.showAddForm = false;
     this.newPlayer = { name: '', role: 'DPS', imageUrl: 'assets/icons/Lucio.webp', stats: { winRate: 0, kda: 0, matchesPlayed: 0 }};
-    alert("Hero added successfully!");
+    alert("Player added successfully!");
   } catch (error) {
     console.error("Error adding hero:", error);
   }
@@ -55,10 +57,9 @@ async saveNewPlayer() {
   
   
   @ViewChild('rosterExportArea') rosterArea!: ElementRef;
+  //HTML2Canvas does all this.
   async exportAsImage() {
     if (this.teamCount === 0) return;
-
-    // Capture the div and convert it to a canvas
     const canvas = await html2canvas(this.rosterArea.nativeElement, {
       backgroundColor: '#0f1214',
       scale: 2
@@ -78,14 +79,12 @@ async saveNewPlayer() {
 ) {}
 
   ngOnInit() {
-  // 1. Load players immediately (independent of auth)
   this.rosterService.getPlayers().subscribe((data) => {
     this.allPlayers = data;
     this.filteredPlayers = data;
     console.log("Players loaded:", data);
   });
 
-  // 2. Check Auth/Role separately
   this.auth.user$.subscribe(async (user: any) => {
     if (user) {
       try {
@@ -116,33 +115,44 @@ async saveNewPlayer() {
     this.rosterService.clearAllSlots();
   }
   async saveCurrentRoster() {
+  // 1. Validation: Don't save if the team is incomplete
   if (this.teamCount < 5) {
     alert('Please fill all 5 slots before saving!');
     return;
   }
 
-  // 1. Get the current team from the roster service
-  const players = this.rosterService.getTeam();
-  
-  // 2. We'll give it a generic name for now
-  const teamName = "New Roster"; 
-
-  try {
-    // 3. Save it to Firebase
-    // For now, we use a placeholder ID until your Login is 100% finished
-    const userId = "guest_user"; 
-    
-    await this.db.saveRoster(userId, teamName, players);
-    alert('Roster successfully saved to the database!');
-  } catch (error) {
-    console.error("Error saving roster:", error);
-    alert('Failed to save roster. Check console for details.');
+  // 2. Validation: Don't save if there is no name
+  if (!this.currentTeamName || !this.currentTeamName.trim()) {
+    alert('Please provide a name for your roster before saving!');
+    return;
   }
+  this.auth.user$.subscribe(async (user) => {
+    if (user) {
+      try {
+        const players = this.rosterService.getTeam();
+        await this.db.saveRoster(user.uid, this.currentTeamName, players);
+        alert('Roster successfully saved to the database!');
+        this.currentTeamName = ''; 
+      } catch (error) {
+        console.error("Error saving roster:", error);
+        alert('Failed to save roster. Check console for details.');
+      }
+    } else {
+      alert('You must be signed in to save a roster!');
+    }
+  });
 }
-   drop(event: CdkDragDrop<any>, targetIndex: number) {
-  if (targetIndex !== -1) {
-    const player = event.item.data;
-    this.rosterService.updateSlot(targetIndex, player);
-  }
-  }
+   drop(event: CdkDragDrop<any>, index: number) {
+  const player = event.item.data;
+  this.rosterService.updateSlot(index, player);
+}
+selectedProfilePlayer: any = null;
+
+openPlayerProfile(player: any) {
+  this.selectedProfilePlayer = player;
+}
+
+closeProfile() {
+  this.selectedProfilePlayer = null;
+}
 }

@@ -1,46 +1,98 @@
-p { text-indent: 50px; }
-
-.photo-grid {
+.home-container {
+  min-height: calc(100vh - 80px);
+  background: radial-gradient(circle at top, #1a2128 0%, #0f1214 70%);
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px; 
-  justify-content: center; 
-  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
 }
 
-
-.photo-item {
-  flex: 1 1 calc(33.333% - 16px); 
-  max-width: calc(33.333% - 16px);
-  aspect-ratio: 16 / 9; 
-  overflow: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+/* HERO SECTION */
+.hero-section {
+  text-align: center;
+  padding: 100px 0 60px 0;
+  max-width: 900px;
 }
 
-.photo-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: scale-down; 
-  display: block;
-  transition: transform 0.3s ease;
+.hero-section h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -2px;
+  margin-bottom: 10px;
 }
 
-.photo-item img:hover {
+.highlight {
+  color: #00d4ff;
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #adb5bd;
+  margin-bottom: 40px;
+}
+
+/* BUTTONS */
+.hero-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.cta-primary {
+  background: #00d4ff;
+  color: #0f1214;
+  border: none;
+  padding: 15px 40px;
+  font-weight: 800;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.cta-primary:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
 }
 
-
-@media (max-width: 768px) {
-  .photo-item {
-    flex: 1 1 calc(50% - 16px);
-    max-width: calc(50% - 16px);
-  }
+.cta-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #323a42;
+  padding: 15px 40px;
+  font-weight: 800;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-@media (max-width: 480px) {
-  .photo-item {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1100px;
+  margin-top: 50px;
+}
+
+.feature-card {
+  background: #1a1f24;
+  border: 1px solid #323a42;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.feature-card .icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.feature-card h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  color: #8a96a3;
+  font-size: 0.9rem;
 }

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, query, orderBy, getDocs, deleteDoc, doc } from '@angular/fire/firestore';
 import { Player } from '../models/player.model';
 
 @Injectable({ providedIn: 'root' })
@@ -8,11 +8,27 @@ export class Database {
 
   // Save the current 5-man roster
   async saveRoster(userId: string, teamName: string, players: (Player | null)[]) {
-    const rostersRef = collection(this.firestore, `users/${userId}/rosters`);
-    return addDoc(rostersRef, {
-      name: teamName,
-      players: players.filter(p => p !== null), // Only save non-null slots
-      timestamp: new Date()
+  const rosterCollection = collection(this.firestore, `users/${userId}/savedRosters`);
+  
+  return addDoc(rosterCollection, {
+    teamName: teamName,
+    players: players,
+    createdAt: new Date(),
+    heroCount: players.filter(p => p !== null).length
     });
   }
+  async getSavedRosters(userId: string) {
+  const rosterRef = collection(this.firestore, `users/${userId}/savedRosters`);
+  const q = query(rosterRef, orderBy('createdAt', 'desc'));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ 
+    id: doc.id, 
+    ...doc.data() 
+  }));
+}
+
+async deleteRoster(userId: string, rosterId: string) {
+  const docRef = doc(this.firestore, `users/${userId}/savedRosters`, rosterId);
+  return deleteDoc(docRef);
+}
 }

@@ -3,6 +3,13 @@
     <div class="roster-label">
       <h3>Current Roster</h3>
       <div class="roster-actions">
+        @if (userRole === 'admin' && teamCount > 0) {
+          <input 
+            type="text" 
+            [(ngModel)]="currentTeamName" 
+            placeholder="Roster Name (e.g. Dive Comp)" 
+            class="team-name-input" />
+        }
         <button class="clear-btn" (click)="clearRoster()" [disabled]="teamCount === 0">Clear Roster</button>
          <button class="export-btn" (click)="exportAsImage()">Export Roster</button>
           @if (userRole === 'admin') {
@@ -39,55 +46,108 @@
       }
     </div>
   </section>
-  <div class="gallery-header center">
-    <h2>PLAYERS</h2>
-  </div>
-  <div class="top-nav-search">
-  <input 
-    type="text" 
-    placeholder="Search by name or role (e.g. Tank)..." 
-    [(ngModel)]="searchTerm" 
-    (input)="filterPlayers()"
-  />
-  </div>
+    <div class="gallery-header center">
+      <h2>PLAYERS</h2>
+    </div>
+    <div class="top-nav-search">
+      <input 
+        type="text" 
+        placeholder="Search by name or role (e.g. Tank)..." 
+        [(ngModel)]="searchTerm" 
+        (input)="filterPlayers()"
+      />
+    </div>
 
-  @if (userRole === 'admin') {
-  <div class="admin-toolbar">
-    <button class="add-new-btn" (click)="showAddForm = !showAddForm">
-      {{ showAddForm ? '✕ Close Form' : '+ Create New Hero' }}
-    </button>
-  </div>
-}
-@if (showAddForm && userRole === 'admin') {
-  <section class="admin-panel fadeIn">
-    <h3>DATABASE: ADD NEW HERO</h3>
-    <div class="admin-form-grid">
-      <div class="form-group">
-        <label>Player Name</label>
-        <input [(ngModel)]="newPlayer.name" placeholder="e.g. Kaos">
-      </div>
-      <div class="form-group">
-        <label>Role</label>
-        <select [(ngModel)]="newPlayer.role">
-          <option value="DPS">DPS</option>
-          <option value="Tank">Tank</option>
-          <option value="Support">Support</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Image Path</label>
-        <input [(ngModel)]="newPlayer.imageUrl" placeholder="assets/icons/Filename.webp">
-      </div>
-      <div class="form-group">
-        <label>Starting Win Rate (%)</label>
-        <input type="number" [(ngModel)]="newPlayer.stats.winRate">
-      </div>
+    @if (userRole === 'admin') {
+    <div class="admin-toolbar">
+      <button class="add-new-btn" (click)="showAddForm = !showAddForm">
+        {{ showAddForm ? '✕ Close Form' : '+ Create New Hero' }}
+      </button>
     </div>
-    <div class="form-actions">
-      <button class="save-hero-btn" (click)="saveNewPlayer()">PUSH TO DATABASE</button>
-    </div>
-  </section>
-}
+    }
+    @if (showAddForm && userRole === 'admin') {
+      <section class="admin-panel fadeIn">
+        <h3>DATABASE: ADD NEW HERO</h3>
+        <div class="admin-form-grid">
+          <div class="form-group">
+            <label>Player Name</label>
+            <input [(ngModel)]="newPlayer.name" placeholder="e.g. Kaos">
+          </div>
+
+          <div class="form-group">
+            <label>Role</label>
+            <select [(ngModel)]="newPlayer.role">
+              <option value="DPS">DPS</option>
+              <option value="Tank">Tank</option>
+              <option value="Support">Support</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Select Hero Icon</label>
+            <select [(ngModel)]="newPlayer.imageUrl">
+              <option value="assets/icons/Ana.webp">Ana</option>
+              <option value="assets/icons/Anran.webp">Anran</option>
+              <option value="assets/icons/Ashe.webp">Ashe</option>
+              <option value="assets/icons/Baptiste.webp">Baptiste</option>
+              <option value="assets/icons/Bastion.webp">Bastion</option>
+              <option value="assets/icons/Brigitte.webp">Brigitte</option>
+              <option value="assets/icons/Cassidy.webp">Cassidy</option>
+              <option value="assets/icons/D.Va.webp">D.Va</option>
+              <option value="assets/icons/Domina.webp">Domina</option>
+              <option value="assets/icons/Doomfist.webp">Doomfist</option>
+              <option value="assets/icons/Echo.webp">Echo</option>
+              <option value="assets/icons/Freja.webp">Freja</option>
+              <option value="assets/icons/Genji.webp">Genji</option>
+              <option value="assets/icons/Hanzo.webp">Hanzo</option>
+              <option value="assets/icons/Illari.webp">Illari</option>
+              <option value="assets/icons/Junker_Queen.webp">Junker Queen</option>
+              <option value="assets/icons/Junkrat.webp">Junkrat</option>
+              <option value="assets/icons/Kiriko.webp">Kiriko</option>
+              <option value="assets/icons/Lifeweaver.webp">Lifeweaver</option>
+              <option value="assets/icons/Lucio.webp">Lucio</option>
+              <option value="assets/icons/Mauga.webp">Mauga</option>
+              <option value="assets/icons/Mei.webp">Mei</option>
+              <option value="assets/icons/Mercy.webp">Mercy</option>
+              <option value="assets/icons/Moira.webp">Moira</option>
+              <option value="assets/icons/Orisa.webp">Orisa</option>
+              <option value="assets/icons/Pharah.webp">Pharah</option>
+              <option value="assets/icons/Ramattra.webp">Ramattra</option>
+              <option value="assets/icons/Reaper.webp">Reaper</option>
+              <option value="assets/icons/Reinhardt.webp">Reinhardt</option>
+              <option value="assets/icons/Roadhog.webp">Roadhog</option>
+              <option value="assets/icons/Sierra.webp">Sierra</option>
+              <option value="assets/icons/Sigma.webp">Sigma</option>
+              <option value="assets/icons/Sojourn.webp">Sojourn</option>
+              <option value="assets/icons/Soldier_76.webp">Soldier 76</option>
+              <option value="assets/icons/Sombra.webp">Sombra</option>
+              <option value="assets/icons/Symmetra.webp">Symmetra</option>
+              <option value="assets/icons/Torbjorn.webp">Torbjorn</option>
+              <option value="assets/icons/Tracer.webp">Tracer</option>
+              <option value="assets/icons/Venture.webp">Venture</option>
+              <option value="assets/icons/Widowmaker.webp">Widowmaker</option>
+              <option value="assets/icons/Winston.webp">Winston</option>
+              <option value="assets/icons/Wrecking_Ball.webp">Wrecking Ball</option>
+              <option value="assets/icons/Wuyang.webp">Wuyang</option>
+              <option value="assets/icons/Zarya.webp">Zarya</option>
+              <option value="assets/icons/Zenyatta.webp">Zenyatta</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>KDA</label>
+            <input type="number" step="0.1" [(ngModel)]="newPlayer.stats.kda">
+          </div>
+          <div class="form-group">
+            <label>Win Rate (%)</label>
+            <input type="number" [(ngModel)]="newPlayer.stats.winRate">
+          </div>
+          <div class="form-group">
+            <label>Matches</label>
+            <input type="number" [(ngModel)]="newPlayer.stats.matchesPlayed">
+          </div>
+          <button class="save-hero-btn" (click)="saveNewPlayer()">PUSH TO DATABASE</button>
+        </div>
+      </section>
+    }
   <main 
   class="player-grid-7" 
   cdkDropList 
