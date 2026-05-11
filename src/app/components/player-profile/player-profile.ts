@@ -138,19 +138,17 @@ export class PlayerProfile implements OnInit {
       return;
     }
     this.auth.user$.subscribe(async (user) => {
-      if (user) {
-        try {
-          const players = this.rosterService.getTeam();
-          await this.db.saveRoster(user.uid, this.currentTeamName, players);
-          alert('Roster successfully saved!');
-          this.currentTeamName = ''; 
-        } catch (error) {
-          alert('Failed to save roster.');
-        }
-      } else {
-        alert('You must be signed in to save a roster!');
+    if (user) {
+      try {
+        const players = this.rosterService.getTeam();
+        await this.db.saveRoster(user.uid, this.currentTeamName, players);
+        alert('Roster successfully saved!');
+        this.currentTeamName = ''; // Clear name only on success
+      } catch (error) {
+        console.error("Error saving roster:", error);
       }
-    });
+    }
+  });
   }
 
   async exportAsImage() {
