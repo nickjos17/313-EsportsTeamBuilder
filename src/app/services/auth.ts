@@ -13,15 +13,12 @@ export class AuthService {
   private firestore = inject(Firestore);
   private router = inject(Router);
 
-  // Observable for the current Firebase User state
   user$ = user(this.auth);
 
-  // BehaviorSubject to track the current user's role (admin or player)
   private userRoleSubject = new BehaviorSubject<string | null>(null);
   userRole$ = this.userRoleSubject.asObservable();
 
   constructor() {
-    // Automatically fetch and update the user's role whenever the auth state changes
     this.user$.pipe(
       switchMap(currentUser => {
         if (currentUser) {
@@ -36,13 +33,11 @@ export class AuthService {
   }
 
   login(email: string, pass: string) {
-    // Wraps the Firebase login promise as an Observable for component subscription
     return from(signInWithEmailAndPassword(this.auth, email, pass));
   }
 
   async register(email: string, pass: string, role: 'admin' | 'player') {
     const credential = await createUserWithEmailAndPassword(this.auth, email, pass);
-    // Creates a corresponding user document in Firestore to store their role
     await setDoc(doc(this.firestore, `users/${credential.user.uid}`), {
       email: email,
       role: role
@@ -61,11 +56,10 @@ export class AuthService {
     } catch (e) {
       console.error("Error fetching role:", e);
     }
-    return 'player'; // Default fallback role
+    return 'player';
   }
 
   logout() {
-    // Signs the user out and clears the local role state before navigating to home
     return from(signOut(this.auth)).pipe(
       tap(() => {
         this.userRoleSubject.next(null);

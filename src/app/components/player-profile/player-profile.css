@@ -14,18 +14,17 @@
 }
 
 .admin-form-grid .form-group:first-child {
-  grid-column: 1 / -1;    /* Force it to span all 3 columns */
+  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  align-items: center;    /* Center the label and input horizontally */
-  margin-bottom: 10px;    /* Add a little space before the next row */
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-/* Style the input itself so it doesn't stretch too wide */
 .admin-form-grid .form-group:first-child input {
   width: 100%;
-  max-width: 400px;       /* Keeps the box at a reasonable size */
-  text-align: center;     /* Centers the text/placeholder inside */
+  max-width: 400px;  
+  text-align: center; 
 }
 
 .admin-panel {
@@ -102,7 +101,7 @@
   margin: 5px 0; 
 }
 .save-hero-btn {
-  background: rgba(0, 212, 255, 0.05); /* Match neon blue theme */
+  background: rgba(0, 212, 255, 0.05);
   border: 1px solid #00d4ff;
   border-radius: 4px;
   color: #00d4ff;
@@ -113,11 +112,10 @@
   letter-spacing: 2px;
   text-transform: uppercase;
   
-  /* Centering Logic */
   grid-column: 1 / -1; 
   justify-self: center;
   margin: 40px auto 0 auto;
-  padding: 12px 60px; /* Wider padding for a database-style action button */
+  padding: 12px 60px;
   
   transition: all 0.3s ease;
 }
@@ -224,13 +222,13 @@
 
 .info-box {
   color: #8a96a3;
-  font-size: 0.7rem; /* Slightly smaller font */
-  margin: 5px 0;    /* Reduced margin */
+  font-size: 0.7rem;
+  margin: 5px 0; 
   text-align: center;
   line-height: 1.2;
 }
 .info-box p {
-  margin: 2px 0; /* Tighten paragraph spacing */
+  margin: 2px 0;
 }
 
 .modern-dark {
@@ -404,7 +402,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 3px solid #00d4ff; /* Neon blue accent */
+  border: 3px solid #00d4ff;
   margin-bottom: 15px;
 }
 
@@ -506,6 +504,6 @@ button:disabled {
 }
 
 .admin-controls button {
-  flex: 1; /* Makes both buttons the same width */
+  flex: 1;
   min-width: 140px;
 }

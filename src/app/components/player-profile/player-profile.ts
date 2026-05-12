@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RosterService } from '../../services/roster';
 import { PlayerCard } from '../player-card/player-card';
 import { Player } from '../../models/player.model';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { Database } from '../../services/database';
 import { AuthService } from '../../services/auth';
 import html2canvas from 'html2canvas';
@@ -61,7 +61,6 @@ export class PlayerProfile implements OnInit {
     });
   }
 
-  // helper to reload players from service
   private refreshPlayers() {
     this.rosterService.getPlayers().subscribe((data) => {
       this.allPlayers = data;
@@ -69,9 +68,7 @@ export class PlayerProfile implements OnInit {
     });
   }
 
-  // --- Profile Modal Logic ---
   openPlayerProfile(player: any) {
-    // Clone to prevent live-editing the gallery card before saving
     this.selectedProfilePlayer = JSON.parse(JSON.stringify(player));
     this.isEditing = false;
   }
@@ -86,7 +83,7 @@ export class PlayerProfile implements OnInit {
     try {
       await this.db.updateHero(this.selectedProfilePlayer.id, this.selectedProfilePlayer);
       this.isEditing = false;
-      this.refreshPlayers(); // Updates the gallery list
+      this.refreshPlayers();
       this.selectedProfilePlayer = null;
       alert('Hero updated successfully!');
     } catch (e) {
@@ -108,7 +105,7 @@ export class PlayerProfile implements OnInit {
     }
   }
 
-  // --- Roster Logic ---
+  //  Roster Logic 
   async saveNewPlayer() {
     if (!this.newPlayer.name) {
       alert("Please enter a Player name!");
@@ -143,7 +140,7 @@ export class PlayerProfile implements OnInit {
         const players = this.rosterService.getTeam();
         await this.db.saveRoster(user.uid, this.currentTeamName, players);
         alert('Roster successfully saved!');
-        this.currentTeamName = ''; // Clear name only on success
+        this.currentTeamName = '';
       } catch (error) {
         console.error("Error saving roster:", error);
       }

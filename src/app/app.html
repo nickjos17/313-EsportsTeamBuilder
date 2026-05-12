@@ -10,14 +10,12 @@
   </nav>
 
   <div class="auth-section">
-    <!-- Show user email and Sign Out if logged in -->
     @if (auth.user$ | async; as user) {
       <div class="user-info">
         <span class="user-email">{{ user.email }}</span>
         <button (click)="logout()" class="logout-btn">Sign Out</button>
       </div>
     } @else {
-      <!-- Show Log In button if no user is logged in -->
       <a routerLink="/login" class="login-btn">Log In</a>
     }
   </div>

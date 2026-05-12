@@ -12,7 +12,7 @@ import { RosterService } from '../../services/roster';
 })
 export class PlayerCard {
   @Input() player!: Player;
-  @Output() viewProfile = new EventEmitter<Player>(); // The "shout"
+  @Output() viewProfile = new EventEmitter<Player>();
   selectedProfilePlayer: Player | null = null;
   isEditing = false;
   
@@ -29,6 +29,6 @@ export class PlayerCard {
   }
 }
 onViewProfile() {
-  this.viewProfile.emit(this.player); // Sending the player data up
+  this.viewProfile.emit(this.player);
 }
 }

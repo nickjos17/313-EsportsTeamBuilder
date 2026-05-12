@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Mandatory for @if
+import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth';
 
 @Component({
@@ -11,7 +11,6 @@ import { AuthService } from './services/auth';
   styleUrl: './app.css'
 })
 export class App {
-  // Inject the service to access user information
   auth = inject(AuthService);
 
   logout() {

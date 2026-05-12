@@ -1,7 +1,7 @@
 export interface Player {
   id: string;
   name: string;
-  role: string;      // e.g., 'Tank', 'Support', 'DPS'
+  role: string;
   imageUrl: string;
   stats: {
     winRate: number;

@@ -6,7 +6,6 @@ import { Player } from '../models/player.model';
 export class Database {
   private firestore = inject(Firestore);
 
-  // Save the current 5-man roster
   async saveRoster(userId: string, teamName: string, players: (Player | null)[]) {
   const rosterCollection = collection(this.firestore, `users/${userId}/savedRosters`);
   

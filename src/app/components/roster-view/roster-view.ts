@@ -13,7 +13,7 @@ import html2canvas from 'html2canvas';
   styleUrl: './roster-view.css'
 })
 export class RosterView implements OnInit {
-  userRole: string = 'player'; // Default to non-admin
+  userRole: string = 'player';
   @ViewChild('rosterExportArea') rosterExportArea!: ElementRef;
   savedTeams: any[] = [];
   selectedTeam: any = null;
@@ -43,12 +43,11 @@ export class RosterView implements OnInit {
     }
   }
 
-  // This fixes the error in roster-view.html
   async deleteRoster(rosterId: string) {
   const user = await firstValueFrom(this.auth.user$);
   if (user && confirm('Are you sure you want to delete this roster?')) {
     await this.db.deleteRoster(user.uid, rosterId);
-    this.loadTeams(user.uid); // Refresh the list
+    this.loadTeams(user.uid);
     this.selectedTeam = null;
   }
 }
@@ -57,10 +56,10 @@ async exportAsImage() {
 
     const element = this.rosterExportArea.nativeElement;
     const canvas = await html2canvas(element, {
-      backgroundColor: '#0f1214', // Matches your dark-theme background
-      scale: 2, // Improves image quality
+      backgroundColor: '#0f1214', 
+      scale: 2, 
       logging: false,
-      useCORS: true // Essential for loading external hero icons
+      useCORS: true
     });
 
     const dataUrl = canvas.toDataURL('image/png');
