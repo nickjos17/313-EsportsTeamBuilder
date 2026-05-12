@@ -8,6 +8,7 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { Database } from '../../services/database';
 import { AuthService } from '../../services/auth';
 import html2canvas from 'html2canvas';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player-profile',
@@ -126,27 +127,30 @@ export class PlayerProfile implements OnInit {
   }
 
   async saveCurrentRoster() {
-    if (this.teamCount < 5) {
-      alert('Please fill all 5 slots before saving!');
-      return;
-    }
-    if (!this.currentTeamName?.trim()) {
-      alert('Please provide a name for your roster!');
-      return;
-    }
-    this.auth.user$.subscribe(async (user) => {
+  if (!this.currentTeamName || !this.currentTeamName.trim()) {
+    return;
+  }
+
+  if (this.teamCount < 5) {
+    alert('Please fill all 5 slots before saving!');
+    return;
+  }
+
+  this.auth.user$.pipe(take(1)).subscribe(async (user) => {
     if (user) {
       try {
         const players = this.rosterService.getTeam();
         await this.db.saveRoster(user.uid, this.currentTeamName, players);
-        alert('Roster successfully saved!');
-        this.currentTeamName = '';
+        
+        alert('Roster successfully saved to the database!');
+        this.currentTeamName = ''; 
       } catch (error) {
         console.error("Error saving roster:", error);
+        alert('Failed to save roster.');
       }
     }
   });
-  }
+}
 
   async exportAsImage() {
     if (this.teamCount === 0) return;
